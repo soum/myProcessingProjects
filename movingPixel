@@ -1,0 +1,21 @@
+float x= 20;
+float y = 20;
+float speed = 20;
+
+void setup() {
+  size(450, 450);
+}
+
+void draw() {
+  background(225, 255, 255);
+  translate(x*speed, y*speed);
+  rect(20, 20, 20, 20);
+}
+void keyPressed() {
+  if (key==CODED) {
+    if (keyCode==UP)y--;
+    if (keyCode==DOWN)y++;
+    if (keyCode==RIGHT)x++;
+    if (keyCode==LEFT)x--;
+  }
+}
