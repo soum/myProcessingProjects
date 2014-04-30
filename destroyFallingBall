@@ -1,0 +1,169 @@
+int radius = 10, directionX = 1, directionY = 0;
+float x=20, y=20, speed=10;
+// =========================================================
+void setup()
+{
+  size(500, 500);
+  smooth();
+  // fill (color(222, 22, 22));
+  //noStroke();
+  ellipseMode(RADIUS);
+  for(int i=0; i<foo.length; i++){
+   foo[i] = new Spot((int)random(640), (-1)*tRadius, tRadius);
+ }
+}
+void draw()
+{
+  background(0);
+  // changing Position
+  x=x+speed*directionX;
+  y=y+speed*directionY; 
+  // check boundaries
+  if ((x>width-radius) || (x<radius))
+  {   
+    directionX=-directionX;
+  }
+  if ((y>height-radius) || (y<radius))
+  {   
+    directionY=-directionY;
+  } 
+  // draw
+  // if(direction==1)
+  // rect(x, y, 20, 20);
+  fill (color(222, 22, 22)); 
+  ellipse (x, y, radius, radius);    // body
+  fill (color(22, 82, 22)); 
+  //ellipse (x-4, y-4, 2, 2);  // the eye
+  
+  // ========================================================
+  
+  for(int i=0;i<foo.length;i++) {
+   colFlag = collisionD(mouseX,mouseY,30,30,foo[i].getX(),foo[i].getY(),tRadius,tRadius);
+   if(colFlag==true || foo[i].getY() > 480){
+     foo[i].setX((int)random(640));
+     foo[i].setY((-1)*tRadius);
+   }else{
+    foo[i].setY(foo[i].getY()+1);
+    foo[i].display();
+   }
+ }
+  
+}
+// =========================================================
+void keyPressed()
+{
+  if (key == CODED)
+  {
+    if (keyCode == LEFT)
+    {
+      //if (directionX>0) { 
+      directionX=-1;
+      directionY=0;
+      //}
+    }
+    else if (keyCode == RIGHT)
+    {
+      //if (directionX<0) {  
+      directionX=1;
+      directionY=0;
+      //}
+    }
+    else if (keyCode == UP)
+    {
+      //if (directionY<0) {
+      directionY=-1;
+      directionX=0;
+      //}
+    }
+    else if (keyCode == DOWN)
+    {
+      //if (directionY<0) { 
+      directionY=1;
+      directionX=0;
+      //}
+    }
+  }
+}
+// =========================================================
+
+//creating an array of Spot objects
+Spot foo[] = new Spot[20];
+
+int tRadius = 50;
+boolean colFlag = false;
+
+/*void setup(){
+ size(640,480);
+ 
+ for(int i=0; i<foo.length; i++){
+   foo[i] = new Spot((int)random(640), (-1)*tRadius, tRadius);
+ }
+}*/
+
+//this is my collision detection
+boolean collisionD(int uX, int uY, int uW, int uH, int bX, int bY, int bW, int bH){
+ boolean col=false;
+ if(uX+uW/2 > bX-bW/2 && uX-uW/2 < bX+bW/2 && uY+uH/2 > bY-bH/2 && uY-uH/2 < bY+bH/2){
+   col = true;
+ }
+ return col;
+}
+
+
+/*void draw(){
+ //background(50);
+ 
+ //draw mouse circle
+ //ellipse(mouseX,mouseY,30,30);
+ 
+ for(int i=0;i<foo.length;i++) {
+   colFlag = collisionD(mouseX,mouseY,30,30,foo[i].getX(),foo[i].getY(),tRadius,tRadius);
+   if(colFlag==true || foo[i].getY() > 480){
+     foo[i].setX((int)random(640));
+     foo[i].setY((-1)*tRadius);
+   }else{
+    foo[i].setY(foo[i].getY()+1);
+    foo[i].display();
+   }
+ }
+ 
+}*/
+
+//our Spot class, this is a Spot object.  Think of it as an actual spot with the properties X,Y,Radius(spotX,spotY,spotRadius)
+class Spot {
+ int spotX, spotY, spotRadius;
+ 
+ //constructor it takes X, Y and Radius.  This gets called when you write       Spot whatever = new Spot(50,50,50);
+ Spot(int theX, int theY, int theRadius){
+   spotX = theX;
+   spotY = theY;
+   spotRadius = theRadius;
+ }
+ 
+ //sets the X value of the spot object
+ void setX(int newX){
+   spotX = newX;
+ }
+ //" y value
+ void setY(int newY){
+   spotY = newY;
+ }
+ 
+ //get the x value of the spot object
+ int getX(){
+   return spotX;
+ }
+ //" y value
+ int getY(){
+   return spotY;
+ }
+ //display the spot object
+ void display(){
+   ellipse(spotX,spotY,spotRadius,spotRadius);
+ }
+ void destroy(){
+   spotX = 0;
+   spotY = 0;
+   spotRadius=0;
+ }
+}
